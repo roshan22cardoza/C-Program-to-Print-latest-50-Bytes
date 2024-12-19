@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h> 
+
+#define max_byte_size 256 // 2^(8) or 8 bits of storage
+
+#define data_max 50
+
+unsigned char data_byte[max_byte_size]; 
+int data_stored = 0;
+
+int main() 
+{
+
+    int elapsed_seconds = 0; // Starting Timer
+
+    while(1) 
+    {
+        printf("Time: %d seconds\n", elapsed_seconds); // Debugging to check whether it actually is working every 10 seconds
+        
+            int num_byte = rand() % 6;
+
+            for (int i = 0; i < num_byte ; i++)
+            {
+                data_byte[data_stored] = rand() % 256;
+
+                data_stored++; 
+            }
+        
+
+        printf("Data count: %d\n", data_stored);
+
+        if (elapsed_seconds % 10 == 0 && elapsed_seconds > 0) 
+        {
+            if(data_stored >= data_max)
+            {
+                printf("Data in hex = ");
+                for(int j = data_stored; j >= (data_stored-data_max)+1 ; j--)
+                {
+                  printf("%02X ", data_byte[j]);
+                }
+                printf("\nNEXT BYTE\n"); // For debugging
+                data_stored = 0; 
+            }
+        }
+
+        sleep(1); 
+        elapsed_seconds++;
+    }
+
+    return 0;
+}
